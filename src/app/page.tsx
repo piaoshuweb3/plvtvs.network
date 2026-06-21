@@ -9,6 +9,7 @@ import FinalCTA from '@/components/plvtvs/FinalCTA';
 import Dashboard from '@/components/plvtvs/Dashboard';
 import ErrorBoundary from '@/components/plvtvs/ErrorBoundary';
 import { getAudioEngine } from '@/lib/plvtvs/audioEngine';
+import { useAuthStore } from '@/lib/plvtvs/auth';
 
 type AppPhase = 'void' | 'scanning' | 'deployed' | 'dashboard';
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [phase, setPhase] = useState<AppPhase>('void');
   const [audioEnabled, setAudioEnabled] = useState(false);
   const [avatarSeed, setAvatarSeed] = useState<string>('guest-initializing');
+  const authUser = useAuthStore((s) => s.user);
 
   // Sync avatarSeed from sessionStorage after mount (avoids SSR mismatch)
   // This is a valid sync-with-external-state pattern; rule disabled for this case.
@@ -31,6 +33,15 @@ export default function Home() {
       setAvatarSeed(guest);
     }
   }, []);
+
+  // When user authenticates, switch avatar seed to their wallet
+  useEffect(() => {
+    if (authUser?.walletAddress) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setAvatarSeed(authUser.walletAddress);
+      sessionStorage.setItem('plvtvs-seed', authUser.walletAddress);
+    }
+  }, [authUser?.walletAddress]);
 
   const handleDeploy = useCallback(() => {
     setPhase('scanning');

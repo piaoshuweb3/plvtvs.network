@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { getAudioEngine } from '@/lib/plvtvs/audioEngine';
+import WalletButton from './WalletButton';
 
 const ParticleAvatar = dynamic(() => import('./ParticleAvatar'), { ssr: false });
 
@@ -22,7 +23,20 @@ export default function HeroSection({
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [booted, setBooted] = useState(false);
   const [bootStep, setBootStep] = useState(0);
+  const [dataRain, setDataRain] = useState<
+    { duration: number; delay: number; bits: string[] }[]
+  >([]);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Initialize data rain client-side only (avoids hydration mismatch)
+  useEffect(() => {
+    const cols = Array.from({ length: 24 }).map(() => ({
+      duration: 6 + Math.random() * 8,
+      delay: Math.random() * 6,
+      bits: Array.from({ length: 18 }).map(() => (Math.random() > 0.5 ? '1' : '0')),
+    }));
+    setDataRain(cols);
+  }, []);
 
   // Boot sequence
   useEffect(() => {
@@ -85,19 +99,19 @@ export default function HeroSection({
       {/* Background grid */}
       <div className="absolute inset-0 cyber-grid-bg opacity-30 pointer-events-none" />
 
-      {/* Data rain (subtle) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
-        {Array.from({ length: 24 }).map((_, i) => (
+      {/* Data rain (subtle) - rendered client-only to avoid hydration mismatch */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-30" suppressHydrationWarning>
+        {dataRain.map((col, i) => (
           <div
             key={i}
             className="absolute top-0 cyber-mono text-[10px] text-[#00FFCC]"
             style={{
               left: `${(i * 4.2) % 100}%`,
-              animation: `cyber-data-rain ${6 + Math.random() * 8}s linear ${Math.random() * 6}s infinite`,
+              animation: `cyber-data-rain ${col.duration}s linear ${col.delay}s infinite`,
             }}
           >
-            {Array.from({ length: 18 }).map((__, j) => (
-              <div key={j}>{Math.random() > 0.5 ? '1' : '0'}</div>
+            {col.bits.map((bit, j) => (
+              <div key={j} suppressHydrationWarning>{bit}</div>
             ))}
           </div>
         ))}
@@ -150,9 +164,7 @@ export default function HeroSection({
               'MUTED'
             )}
           </button>
-          <button className="cyber-btn cyber-btn-blue !py-2 !px-4 !text-[10px]">
-            JACK IN
-          </button>
+          <WalletButton />
         </div>
       </nav>
 

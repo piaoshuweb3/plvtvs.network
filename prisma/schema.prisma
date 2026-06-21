@@ -1,8 +1,5 @@
 // This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// learn more about it in the docs at https://pris.ly/d/prisma-schema
 
 generator client {
   provider = "prisma-client-js"
@@ -13,20 +10,140 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ============================================================
+// PLVTVS.NETWORK — User & Subscription System
+// ============================================================
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String   @id @default(cuid())
+  walletAddress   String   @unique
+  email           String?
+  username        String?
+  role            UserRole @default(USER)
+  status          UserStatus @default(ACTIVE)
+  avatarSeed      String?
+  subscriptionTier Int     @default(0) // 0=none, 1=monthly, 2=quarterly, 3=annual
+  subscriptionExpiresAt DateTime?
+  totalYield      Float    @default(0) // accumulated ETH yield
+  lastLoginAt     DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  subscriptions   Subscription[]
+  nodes           Node[]
+  activityLogs    ActivityLog[]
+  adminActions    AdminLog[]   @relation("AdminActions")
+  receivedActions AdminLog[]   @relation("TargetUser")
+
+  @@index([role])
+  @@index([status])
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+enum UserRole {
+  USER          // Regular user / subscriber
+  OPERATOR      // Mid-level admin: can view & manage users, see logs, no system config
+  SUPER_ADMIN   // Full system control
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+model Subscription {
+  id          String   @id @default(cuid())
+  userId      String
+  tier        Int      // 1=monthly, 2=quarterly, 3=annual
+  priceEth    Float
+  txHash      String?
+  startsAt    DateTime @default(now())
+  expiresAt   DateTime
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+model Node {
+  id           String   @id @default(cuid())
+  userId       String
+  sector       NodeSector // SOCIAL / ECOM / CRYPTO
+  echoId       String   // e.g. "#412"
+  status       NodeStatus @default(SPAWNING)
+  efficiency   Int      @default(0) // 0-100
+  yieldEth     Float    @default(0)
+  lastHeartbeat DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([sector])
+  @@index([status])
+}
+
+enum NodeSector {
+  SOCIAL
+  ECOM
+  CRYPTO
+}
+
+enum NodeStatus {
+  SPAWNING
+  ONLINE
+  DEGRADED
+  OFFLINE
+}
+
+model ActivityLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  sector      String?  // SOCIAL / ECOM / CRYPTO / SYSTEM
+  level       LogLevel @default(INFO)
+  message     String
+  metadata    String?  // JSON string
+  createdAt   DateTime @default(now())
+
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([sector])
+  @@index([createdAt])
+}
+
+enum LogLevel {
+  INFO
+  WARN
+  ERROR
+  SUCCESS
+}
+
+model AdminLog {
+  id          String   @id @default(cuid())
+  adminId     String
+  targetUserId String?
+  action      String   // e.g. "BAN_USER", "ADJUST_YIELD", "RESTART_NODE"
+  reason      String?
+  metadata    String?  // JSON string
+  createdAt   DateTime @default(now())
+
+  admin       User     @relation("AdminActions", fields: [adminId], references: [id])
+  targetUser  User?    @relation("TargetUser", fields: [targetUserId], references: [id], onDelete: SetNull)
+
+  @@index([adminId])
+  @@index([targetUserId])
+  @@index([action])
+}
+
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  updatedAt   DateTime @updatedAt
+  updatedBy   String?
 }
