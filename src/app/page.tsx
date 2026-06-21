@@ -48,8 +48,13 @@ export default function Home() {
   }, []);
 
   const handleScanComplete = useCallback(
-    (success: boolean) => {
+    (success: boolean, bioHash?: string) => {
       if (success) {
+        // If face scan produced a bio-hash, use it as the avatar seed
+        if (bioHash) {
+          setAvatarSeed(bioHash);
+          sessionStorage.setItem('plvtvs-seed', bioHash);
+        }
         setPhase('deployed');
         // Smooth scroll down to the revelation section
         setTimeout(() => {

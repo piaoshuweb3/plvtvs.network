@@ -45,13 +45,20 @@ export default function AdminShell({
     return () => clearInterval(interval);
   }, []);
 
-  // Auto-redirect if not authenticated — give 10s grace for wallet reconnect
+  // Auto-redirect ONLY if no wallet is connected AND user hasn't authenticated
+  // after the boot sequence + 15s grace period (gives time for wagmi auto-reconnect).
+  // Once a wallet is connected (even if not admin), do NOT auto-redirect —
+  // show the appropriate access-denied UI so the user can choose what to do.
   useEffect(() => {
-    if (!walletConnected && !isAuthenticated) {
-      const t = setTimeout(() => router.push('/'), 10000);
+    if (!walletConnected && !isAuthenticated && booted) {
+      const t = setTimeout(() => {
+        // Only redirect if still unauthenticated
+        const stillUnauth = !useAuthStore.getState().isAuthenticated;
+        if (stillUnauth) router.push('/');
+      }, 15000);
       return () => clearTimeout(t);
     }
-  }, [walletConnected, isAuthenticated, router]);
+  }, [walletConnected, isAuthenticated, booted, router]);
 
   // Check role
   const hasAccess =

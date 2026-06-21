@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { io as socketIo, type Socket } from 'socket.io-client';
 import { getAudioEngine } from '@/lib/plvtvs/audioEngine';
 import PixelAvatar from './PixelAvatar';
+import SubscriptionPanel from './SubscriptionPanel';
 
 interface DashboardProps {
   avatarSeed: string;
@@ -295,17 +297,25 @@ function ActiveSectors({ onAdjust }: { onAdjust: () => void }) {
   );
 }
 
-// === MODULE 4: Activity Logs Terminal ===
-const LOG_TEMPLATES = [
-  { sector: 'SOCIAL', text: 'Spawning digital echo node #[ID]. Dispatched multi-threaded viral feed.' },
-  { sector: 'SOCIAL', text: 'Intercepting attention vector from Twitter/X API. Yielding ad-pool...' },
-  { sector: 'SOCIAL', text: 'Autonomous AI clone completed text-to-video synthesis. Injecting TikTok matrix.' },
-  { sector: 'ECOM', text: 'Puppeteer cluster detected arbitrage discrepancy between upper/lower nodes.' },
-  { sector: 'ECOM', text: 'Shopify dynamic storefront cloned. Routing fulfillment automation.' },
-  { sector: 'ECOM', text: 'Stripe Webhook signature verified. Capturing spread surplus: +$[VAL] USD.' },
-  { sector: 'CRYPTO', text: 'Mempool sniffer captured whale transaction on Base Layer-2 network.' },
-  { sector: 'CRYPTO', text: 'Executing flash-loan sandwich arbitrage via Aerodrome liquidity pool.' },
-  { sector: 'CRYPTO', text: 'Session Key verified (ERC-4337). Smart Account swapping [VAL] ETH to USDe.' },
+// === MODULE 4: Activity Logs Terminal (live from WebSocket service) ===
+
+interface LiveLogEvent {
+  id: string;
+  sector: 'SOCIAL' | 'ECOM' | 'CRYPTO' | 'SYSTEM';
+  level: 'INFO' | 'WARN' | 'ERROR' | 'SUCCESS';
+  message: string;
+  timestamp: string;
+  source?: string;
+}
+
+// Fallback templates if WebSocket service is offline
+const FALLBACK_LOG_TEMPLATES = [
+  { sector: 'SOCIAL' as const, text: 'Spawning digital echo node #[ID]. Dispatched multi-threaded viral feed.' },
+  { sector: 'SOCIAL' as const, text: 'Intercepting attention vector from Twitter/X API. Yielding ad-pool...' },
+  { sector: 'ECOM' as const, text: 'Puppeteer cluster detected arbitrage discrepancy between upper/lower nodes.' },
+  { sector: 'ECOM' as const, text: 'Shopify dynamic storefront cloned. Routing fulfillment automation.' },
+  { sector: 'CRYPTO' as const, text: 'Mempool sniffer captured whale transaction on Base Layer-2 network.' },
+  { sector: 'CRYPTO' as const, text: 'Executing flash-loan sandwich arbitrage via Aerodrome liquidity pool.' },
 ];
 
 function ActivityLogs({ active }: { active: boolean }) {
@@ -314,32 +324,104 @@ function ActivityLogs({ active }: { active: boolean }) {
     `[SYS_INIT] // Establishing secure tunnel with Base RPC Node... SUCCESS.`,
     `[SYS_INIT] // Account Abstraction Session Key: ACTIVE.`,
   ]);
+  const [liveConnected, setLiveConnected] = useState(false);
+  const [stats, setStats] = useState<{ totalLogs: number; activeClients: number } | null>(null);
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const socketRef = useRef<Socket | null>(null);
+  const fallbackTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const generateLog = useCallback(() => {
+  // Format incoming WebSocket log events into display strings
+  const formatLog = useCallback((ev: LiveLogEvent): string => {
+    const time = new Date(ev.timestamp).toISOString().split('T')[1].slice(0, 8);
+    return `[${time}] [${ev.sector}] > ${ev.message}`;
+  }, []);
+
+  // Fallback: simulate logs if WebSocket is offline
+  const generateFallbackLog = useCallback((): string => {
     const timestamp = new Date().toISOString().split('T')[1].slice(0, 8);
-    const template = LOG_TEMPLATES[Math.floor(Math.random() * LOG_TEMPLATES.length)];
-    const processedText = template.text
+    const t = FALLBACK_LOG_TEMPLATES[Math.floor(Math.random() * FALLBACK_LOG_TEMPLATES.length)];
+    const text = t.text
       .replace('[ID]', String(Math.floor(Math.random() * 9000 + 1000)))
       .replace('[VAL]', (Math.random() * 2 + 0.1).toFixed(3));
-    return `[${timestamp}] [${template.sector}] > ${processedText}`;
+    return `[${timestamp}] [${t.sector}] > ${text}`;
   }, []);
 
   useEffect(() => {
     if (!active) return;
 
-    let timer: ReturnType<typeof setTimeout>;
-    const triggerNext = () => {
-      const delay = Math.random() * 1500 + 1000;
-      timer = setTimeout(() => {
-        setLogs((prev) => [...prev, generateLog()].slice(-50));
-        triggerNext();
-      }, delay);
-    };
-    triggerNext();
+    // Try to connect to the PLVTVS logs WebSocket service
+    // The gateway forwards /?XTransformPort=3030 → localhost:3030
+    let connected = false;
+    try {
+      const socket = socketIo('/?XTransformPort=3030', {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 2000,
+        timeout: 5000,
+      });
+      socketRef.current = socket;
 
-    return () => clearTimeout(timer);
-  }, [active, generateLog]);
+      socket.on('connect', () => {
+        connected = true;
+        setLiveConnected(true);
+        setLogs((prev) => [
+          ...prev,
+          `[SYS_INIT] // Live node cluster link established (WebSocket).`,
+        ]);
+      });
+
+      socket.on('plvtvs:history', (data: { logs: LiveLogEvent[] }) => {
+        if (data.logs && data.logs.length > 0) {
+          setLogs((prev) => [...prev, ...data.logs.slice(-20).map(formatLog)].slice(-50));
+        }
+      });
+
+      socket.on('plvtvs:log', (ev: LiveLogEvent) => {
+        setLogs((prev) => [...prev, formatLog(ev)].slice(-50));
+      });
+
+      socket.on('plvtvs:stats', (s: { totalLogs: number; activeClients: number }) => {
+        setStats(s);
+      });
+
+      socket.on('disconnect', () => {
+        setLiveConnected(false);
+      });
+
+      socket.on('connect_error', () => {
+        // Fall through to fallback mode
+        if (!connected) {
+          setLiveConnected(false);
+        }
+      });
+    } catch (e) {
+      console.warn('[ActivityLogs] WebSocket init failed:', e);
+    }
+
+    // Fallback: if not connected within 3s, start simulated logs
+    const fallbackCheck = setTimeout(() => {
+      if (!connected) {
+        const triggerNext = () => {
+          const delay = Math.random() * 1500 + 1000;
+          fallbackTimerRef.current = setTimeout(() => {
+            setLogs((prev) => [...prev, generateFallbackLog()].slice(-50));
+            triggerNext();
+          }, delay);
+        };
+        triggerNext();
+      }
+    }, 3000);
+
+    return () => {
+      clearTimeout(fallbackCheck);
+      if (fallbackTimerRef.current) clearTimeout(fallbackTimerRef.current);
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+        socketRef.current = null;
+      }
+    };
+  }, [active, formatLog, generateFallbackLog]);
 
   useEffect(() => {
     if (terminalEndRef.current) {
@@ -354,15 +436,26 @@ function ActivityLogs({ active }: { active: boolean }) {
         <span className="cyber-mono text-[10px] tracking-[0.2em] text-[#888]">
           MODULE 04 // REAL-TIME ACTIVITY LOGS
         </span>
+        <span
+          className="ml-auto cyber-mono text-[9px] px-1.5 py-0.5 border"
+          style={{
+            color: liveConnected ? '#00FFCC' : '#FFCC00',
+            borderColor: liveConnected ? '#00FFCC' : '#FFCC00',
+          }}
+        >
+          {liveConnected ? '◉ LIVE' : '○ FALLBACK'}
+        </span>
       </div>
 
       <div className="flex-1 overflow-y-auto cyber-mono text-[11px] leading-relaxed pr-1">
         {logs.map((log, i) => {
+          if (typeof log !== 'string') return null;
           let color = '#FFFFFF';
           if (log.includes('[SYS_INIT]')) color = '#888888';
           else if (log.includes('[SOCIAL]')) color = '#0066FF';
           else if (log.includes('[ECOM]')) color = '#FFCC00';
           else if (log.includes('[CRYPTO]')) color = '#00FFCC';
+          else if (log.includes('[SYSTEM]')) color = '#888888';
           return (
             <div
               key={i}
@@ -378,9 +471,16 @@ function ActivityLogs({ active }: { active: boolean }) {
         <div ref={terminalEndRef} />
       </div>
 
-      <div className="flex items-center mt-3 pt-2 border-t border-[#1a1a1a] cyber-mono text-[11px] text-[#00FFCC]">
-        <span className="mr-1">$ plvtvs --status</span>
-        <span className="cyber-blink inline-block w-2 h-3.5 bg-[#00FFCC]" />
+      <div className="flex items-center justify-between mt-3 pt-2 border-t border-[#1a1a1a] cyber-mono text-[11px]">
+        <div className="text-[#00FFCC] flex items-center">
+          <span className="mr-1">$ plvtvs --status</span>
+          <span className="cyber-blink inline-block w-2 h-3.5 bg-[#00FFCC]" />
+        </div>
+        {stats && (
+          <div className="text-[#666] text-[9px]">
+            {stats.totalLogs} TOTAL · {stats.activeClients} CLIENTS
+          </div>
+        )}
       </div>
     </div>
   );
@@ -444,6 +544,11 @@ export default function Dashboard({ avatarSeed, onJackOut }: DashboardProps) {
         <RealTimeValuation active />
         <ActiveSectors onAdjust={() => getAudioEngine().playGlitch()} />
         <ActivityLogs active />
+      </div>
+
+      {/* On-chain subscription panel (full width) */}
+      <div className="mt-6">
+        <SubscriptionPanel />
       </div>
 
       {/* Bottom bar */}

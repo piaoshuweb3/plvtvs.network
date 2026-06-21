@@ -2,24 +2,15 @@
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import type { UserRole, UserStatus, PlvtvsUser } from './auth-constants';
 
-export type UserRole = 'USER' | 'OPERATOR' | 'SUPER_ADMIN';
-export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'BANNED';
-
-export interface PlvtvsUser {
-  id: string;
-  walletAddress: string;
-  username?: string | null;
-  email?: string | null;
-  role: UserRole;
-  status: UserStatus;
-  avatarSeed?: string | null;
-  subscriptionTier: number;
-  subscriptionExpiresAt?: string | null;
-  totalYield: number;
-  lastLoginAt?: string | null;
-  createdAt: string;
-}
+// Re-export isomorphic types/constants for client convenience
+export type { UserRole, UserStatus, PlvtvsUser } from './auth-constants';
+export {
+  SUPER_ADMIN_WALLETS,
+  OPERATOR_WALLETS,
+  deriveRoleFromWallet,
+} from './auth-constants';
 
 interface AuthState {
   user: PlvtvsUser | null;
@@ -76,21 +67,3 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 );
-
-// Known admin wallets (in production, this would be managed via SystemConfig table)
-export const SUPER_ADMIN_WALLETS: string[] = [
-  '0x7a9f8b2c1d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a', // example super admin
-  '0xdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef',
-];
-
-export const OPERATOR_WALLETS: string[] = [
-  '0xoperator1deadbeefdeadbeefdeadbeefdeadbeef',
-  '0xoperator2deadbeefdeadbeefdeadbeefdeadbeef',
-];
-
-export function deriveRoleFromWallet(wallet: string): UserRole {
-  const w = wallet.toLowerCase();
-  if (SUPER_ADMIN_WALLETS.some((a) => a.toLowerCase() === w)) return 'SUPER_ADMIN';
-  if (OPERATOR_WALLETS.some((a) => a.toLowerCase() === w)) return 'OPERATOR';
-  return 'USER';
-}

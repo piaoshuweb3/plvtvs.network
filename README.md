@@ -95,6 +95,68 @@ All sounds are synthesized at runtime via Web Audio API:
 - C-minor synth pad with lowpass filter (The Revelation)
 - Glitch burst, data swoosh, success arpeggio
 
+## Wallet Authentication & Admin System
+
+### Wallet Login (top-right of every page)
+- **RainbowKit + Wagmi v2 + Viem v2** on Base Mainnet + Base Sepolia
+- Top-right `CONNECT WALLET` button → opens RainbowKit modal (MetaMask / Coinbase / WalletConnect)
+- On connect, the wallet auto-registers (or signs in) via `POST /api/auth/login`
+- Session is persisted in `sessionStorage` (Zustand + persist middleware)
+- Connected button shows: short address + role badge + dropdown menu (Home / Dashboard / Admin / Disconnect)
+
+### Three-Tier RBAC
+| Role | Privileges |
+|------|------------|
+| `USER` | Standard subscriber — can use dashboard, deploy avatar, subscribe |
+| `OPERATOR` | Mid-level admin — can view/manage users, see all logs, restart nodes; cannot ban other admins or change roles above their own |
+| `SUPER_ADMIN` | Full control — can ban, suspend, promote/demote, change any user's role |
+
+Roles are derived from:
+1. Hard-coded wallet allowlists in `src/lib/plvtvs/auth.ts` (`SUPER_ADMIN_WALLETS`, `OPERATOR_WALLETS`)
+2. Database `User.role` column (overridden by super-admin action via the admin console)
+
+### Routes
+| Route | Access | Description |
+|-------|--------|-------------|
+| `/` | Public | Hero experience + deploy ritual + revelation scenes |
+| `/dashboard` | Public (guest mode) or authenticated | 4-module cyber console (Cyber Ghost / Valuation / Sectors / Logs) |
+| `/admin` | OPERATOR+ only | Admin console with 4 tabs (Overview / Users / Logs / Admin Audit) |
+
+### Admin Console Features (`/admin`)
+- **OVERVIEW** — KPI cards (total ghosts, subscribers, online nodes, total yield) + user breakdown bars + node distribution by sector/status + 24h activity counts
+- **USER MANAGEMENT** — Filterable user table (search, role, status) with per-row actions: SUSPEND / ACTIVATE / PROMOTE-TO-OPERATOR / DEMOTE / BAN
+- **ACTIVITY LOGS** — Real-time scrolling activity log stream (color-coded by sector: SOCIAL/ECOM/CRYPTO/SYSTEM)
+- **ADMIN AUDIT LOG** — All admin actions recorded with admin wallet + target user + action + reason
+
+### API Surface
+```
+POST   /api/auth/login              # Wallet sign-in / auto-register
+POST   /api/auth/logout             # Stateless logout
+GET    /api/auth/me?wallet=0x...    # Get public user profile
+
+GET    /api/admin/stats             # KPI overview (OPERATOR+)
+GET    /api/admin/users             # List users with filters (OPERATOR+)
+PATCH  /api/admin/users/[id]        # Update role/status/yield (SUPER_ADMIN for role)
+DELETE /api/admin/users/[id]        # Ban user (SUPER_ADMIN)
+GET    /api/admin/logs?type=        # Activity or admin audit logs (OPERATOR+)
+GET    /api/admin/nodes             # List all nodes (OPERATOR+)
+PATCH  /api/admin/nodes             # Bulk restart/online/offline (OPERATOR+)
+
+GET    /api/user/subscription       # Get user's subscriptions
+POST   /api/user/subscription       # Purchase/extend subscription (tier 1/2/3)
+```
+
+All admin endpoints are protected by the `requireOperator()` / `requireSuperAdmin()` middleware in `src/lib/plvtvs/admin-auth.ts`. The middleware reads the `x-plvtvs-wallet` header (sent by the client) and verifies the user's role from the database.
+
+### WalletConnect Project ID
+To enable WalletConnect QR-code connections (mobile wallets), register a free project at [cloud.walletconnect.com](https://cloud.walletconnect.com) and set:
+```bash
+# .env.local
+NEXT_PUBLIC_WC_PROJECT_ID=your_project_id_here
+```
+
+Without this, injected wallets (MetaMask, Coinbase) still work perfectly — only the remote WalletConnect Cloud metadata fetch will return 403 (harmless console warning).
+
 ## Local Development
 
 ```bash
@@ -110,13 +172,23 @@ bun run build
 bun run start
 ```
 
+## Database
+
+```bash
+bun run db:push     # Apply schema to SQLite
+bun run db:generate # Regenerate Prisma client
+```
+
 ## Roadmap
 
-- [ ] Wagmi + Viem integration for real Base Mainnet wallet connection
+- [x] Wagmi + Viem integration for real Base Mainnet wallet connection
+- [x] Admin console with OPERATOR + SUPER_ADMIN RBAC
+- [x] User / subscription / node / log management APIs
 - [ ] On-chain subscription verification via PlvtvsSubscription smart contract
 - [ ] Real biometric face capture via MediaPipe Face Mesh
 - [ ] WebSocket-driven live activity logs from backend cluster
 - [ ] ERC-4337 Session Key for autonomous on-chain execution
+- [ ] Email/notification system for subscription expiry
 
 ## License
 
