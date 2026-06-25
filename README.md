@@ -1,4 +1,4 @@
-# PLVTVS.NETWORK
+# PLVTVS.ONE
 
 > **Your Ghost in the Wireless Shell.**
 > The sovereign avatar engineered to intercept, adapt, and monetize network value streams autonomously. Beyond Agents.
@@ -7,7 +7,7 @@
 ![V](https://img.shields.io/badge/V-2.0.26-FFCC00?style=for-the-badge)
 ![NETWORK](https://img.shields.io/badge/NETWORK-BASE_L2-0066FF?style=for-the-badge)
 
-PLVTVS.NETWORK is a movie-grade cyberpunk web experience for digital avatars. Inspired by Polsia's high-end minimalist aesthetic, it weaves Greek mythology (Plutus, god of wealth) with cyberpunk futurism into a three-phase interactive ritual:
+PLVTVS.ONE is a movie-grade cyberpunk web experience for digital avatars. Inspired by Polsia's high-end minimalist aesthetic, it weaves Greek mythology (Plutus, god of wealth) with cyberpunk futurism into a three-phase interactive ritual:
 
 1. **The Void** — Absolute black screen with a 3D particle avatar (Three.js + custom GLSL shaders) that breathes, rotates, and responds to mouse proximity.
 2. **The Ritual** — Click "Deploy Your Avatar" to trigger a biometric scan sequence with crosshair targeting, green laser sweep, code-tick audio, and a final particle explosion. A Lo-fi 64×64 pixel avatar is deterministically generated from your session seed.

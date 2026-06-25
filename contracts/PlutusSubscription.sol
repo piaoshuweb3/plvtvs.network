@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 
 /**
  * @title PlutusSubscription
- * @dev PLVTVS.NETWORK — Decentralized subscription verification core.
+ * @dev PLVTVS.ONE — Decentralized subscription verification core.
  *
  * Designed for Base L2 (low gas, fast finality). Users purchase
  * time-based subscriptions by paying native ETH; the contract records

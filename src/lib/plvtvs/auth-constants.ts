@@ -1,5 +1,5 @@
 // ============================================================
-// PLVTVS.NETWORK — Admin wallet allowlists + role derivation
+// PLVTVS.ONE — Admin wallet allowlists + role derivation
 // ============================================================
 // This file is isomorphic (safe for both server and client).
 // The Zustand auth store lives in a separate 'use client' file.

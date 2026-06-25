@@ -105,7 +105,7 @@ export default function AdminShell({
           onClick={() => router.push('/')}
           className="cyber-mono text-[10px] text-[#666] hover:text-[#00FFCC] mt-6"
         >
-          ← BACK TO PLVTVS.NETWORK
+          ← BACK TO PLVTVS.ONE
         </button>
       </div>
     );

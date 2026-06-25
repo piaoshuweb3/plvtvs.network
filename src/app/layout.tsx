@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PLVTVS.NETWORK — Your Ghost in the Wireless Shell",
+  title: "PLVTVS.ONE — Your Ghost in the Wireless Shell",
   description:
     "The sovereign avatar engineered to intercept, adapt, and monetize network value streams autonomously. Beyond Agents. The God of Digital Wealth Creation.",
   keywords: [
@@ -33,16 +33,16 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
   },
   openGraph: {
-    title: "PLVTVS.NETWORK",
+    title: "PLVTVS.ONE",
     description:
       "Your Ghost in the Wireless Shell. The sovereign avatar engineered to monetize network value streams autonomously.",
-    url: "https://plvtvs.network",
-    siteName: "PLVTVS.NETWORK",
+    url: "https://plvtvs.one",
+    siteName: "PLVTVS.ONE",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PLVTVS.NETWORK",
+    title: "PLVTVS.ONE",
     description:
       "Beyond Agents. The God of Digital Wealth Creation.",
   },

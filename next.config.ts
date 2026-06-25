@@ -7,8 +7,8 @@ const nextConfig: NextConfig = {
   // (needed for WalletConnect + WebSocket mini-service)
   allowedDevOrigins: [
     'preview-chat-2919e75e-646f-49d7-93fe-735fbe3f1e47.space-z.ai',
-    'plvtvs.network',
-    'www.plvtvs.network',
+    'plvtvs.one',
+    'www.plvtvs.one',
   ],
   // TypeScript errors are surfaced in CI but don't block Vercel build
   typescript: {
