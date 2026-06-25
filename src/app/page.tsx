@@ -124,11 +124,17 @@ export default function Home() {
         />
       </ErrorBoundary>
 
-      <BeyondAgents />
+      <ErrorBoundary>
+        <BeyondAgents />
+      </ErrorBoundary>
 
-      <WealthScenes />
+      <ErrorBoundary>
+        <WealthScenes />
+      </ErrorBoundary>
 
-      <FinalCTA avatarSeed={avatarSeed} onEnterDashboard={handleEnterDashboard} />
+      <ErrorBoundary>
+        <FinalCTA avatarSeed={avatarSeed} onEnterDashboard={handleEnterDashboard} />
+      </ErrorBoundary>
 
       {/* Scan Ritual overlay (Phase 2) - only mount when scanning */}
       {phase === 'scanning' && (

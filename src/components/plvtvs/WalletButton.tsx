@@ -10,9 +10,9 @@ import { usePathname, useRouter } from 'next/navigation';
 // ============================================================
 // WalletButton — top-right cyberpunk wallet login
 //
-// Uses RainbowKit's ConnectButton.Custom render prop to fully
-// control the UI. The ConnectButton is ALWAYS mounted (even when
-// disconnected) so the modal context is always available.
+// Uses ConnectButton.Custom with render prop. The ConnectButton
+// is ALWAYS mounted so RainbowKit's modal context is always
+// available. The render prop controls all UI states.
 // ============================================================
 
 interface WalletButtonProps {
@@ -29,14 +29,9 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
   const [authenticating, setAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   const inFlightWalletRef = useRef<string | null>(null);
   const lastAuthWalletRef = useRef<string | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // ============================================================
   // authenticate
@@ -80,7 +75,6 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
 
   // React to wagmi connect
   useEffect(() => {
-    if (!mounted) return;
     if (!isConnected || !address) {
       if (!isReconnecting && user) {
         logout();
@@ -93,7 +87,7 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
     if (!sameWallet && !authenticating && !isReconnecting) {
       authenticate(address);
     }
-  }, [isConnected, isReconnecting, address, user, authenticating, authenticate, logout, mounted]);
+  }, [isConnected, isReconnecting, address, user, authenticating, authenticate, logout]);
 
   const handleDisconnect = () => {
     setDropdownOpen(false);
@@ -122,25 +116,22 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
     return () => window.removeEventListener('keydown', handler);
   }, [dropdownOpen]);
 
-  // === Render: Always mount ConnectButton.Custom ===
-  // This ensures RainbowKit's modal context is always available.
-  // The render prop lets us fully control the UI for all states.
+  // === Single ConnectButton.Custom — handles ALL states ===
   return (
     <ConnectButton.Custom>
       {({ account, chain, openConnectModal, openAccountModal, openChainModal, mounted: rkMounted }) => {
-        // SSR-safe: show placeholder until mounted
-        if (!mounted || !rkMounted) {
+        // Don't render anything until mounted (SSR safety)
+        if (!rkMounted) {
           return (
             <button
               disabled
-              className="cyber-btn cyber-btn-blue !py-2 !px-3 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5 opacity-50"
+              className="cyber-btn cyber-btn-blue !py-2 !px-2 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5 opacity-50"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
                 <rect x="1" y="2.5" width="10" height="7" stroke="currentColor" strokeWidth="1" />
                 <circle cx="6" cy="6" r="1.2" fill="currentColor" />
               </svg>
-              <span className="hidden sm:inline">CONNECT</span>
-              <span className="sm:hidden">CW</span>
+              <span className="hidden xs:inline">···</span>
             </button>
           );
         }
@@ -150,11 +141,10 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
           return (
             <button
               disabled
-              className="cyber-btn cyber-btn-blue !py-2 !px-3 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5 cursor-wait"
+              className="cyber-btn cyber-btn-blue !py-2 !px-2 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5 cursor-wait"
             >
               <span className="cyber-blink">▊</span>
-              <span className="hidden sm:inline">{isConnecting ? 'CONNECTING' : 'AUTHENTICATING'}</span>
-              <span className="sm:hidden">{isConnecting ? '...' : 'AUTH'}</span>
+              <span className="hidden sm:inline">{isConnecting ? 'CONNECTING' : 'AUTH'}</span>
             </button>
           );
         }
@@ -164,14 +154,19 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
           return (
             <div className="relative">
               <button
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
                   setError(null);
                   getAudioEngine().init();
                   getAudioEngine().resume();
                   getAudioEngine().playClick();
-                  openConnectModal();
+                  // Call openConnectModal in the next tick to ensure it's available
+                  setTimeout(() => {
+                    openConnectModal();
+                  }, 0);
                 }}
-                className="cyber-btn cyber-btn-blue !py-2 !px-3 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5"
+                className="cyber-btn cyber-btn-blue !py-2 !px-2 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5"
               >
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="flex-shrink-0">
                   <rect x="1" y="2.5" width="10" height="7" stroke="currentColor" strokeWidth="1" />
@@ -195,12 +190,11 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
             <div className="relative">
               <button
                 onClick={() => address && authenticate(address)}
-                className="cyber-btn !py-2 !px-3 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5"
+                className="cyber-btn !py-2 !px-2 sm:!px-4 !text-[9px] sm:!text-[10px] flex items-center gap-1.5"
                 style={{ borderColor: '#ff4444', color: '#ff4444' }}
               >
                 <span className="cyber-blink">!</span>
-                <span className="hidden sm:inline">RETRY AUTH</span>
-                <span className="sm:hidden">!</span>
+                <span className="hidden sm:inline">RETRY</span>
               </button>
               {error && (
                 <div className="absolute right-0 top-full mt-1 cyber-mono text-[9px] text-[#ff4444] whitespace-nowrap z-50 max-w-[260px]">
@@ -212,7 +206,7 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
         }
 
         // === Fully connected + authenticated ===
-        const addr = account.address;
+        const addr = account.address || address || '';
         const shortAddr = `${addr.slice(0, 6)}...${addr.slice(-4)}`;
         const roleLabel =
           user.role === 'SUPER_ADMIN' ? 'SUPER_ADMIN'
@@ -231,8 +225,8 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
                 setDropdownOpen(!dropdownOpen);
                 getAudioEngine().playClick();
               }}
-              className="cyber-mono text-[9px] sm:text-[10px] flex items-center gap-2 px-2 sm:px-3 py-2 border border-[#1a1a1a] hover:border-[#00FFCC] bg-black/60 transition-colors"
-              style={{ minWidth: compact ? 120 : 160 }}
+              className="cyber-mono text-[9px] sm:text-[10px] flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-2 border border-[#1a1a1a] hover:border-[#00FFCC] bg-black/60 transition-colors"
+              style={{ minWidth: compact ? 100 : 140 }}
             >
               <span
                 className="w-1.5 h-1.5 rounded-full cyber-pulse flex-shrink-0"
@@ -241,7 +235,7 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
               <span className="flex-1 text-left min-w-0">
                 <div className="text-white truncate">{shortAddr}</div>
                 {!compact && (
-                  <div className="text-[8px] text-[#666] tracking-wider">{roleLabel}</div>
+                  <div className="text-[7px] sm:text-[8px] text-[#666] tracking-wider">{roleLabel}</div>
                 )}
               </span>
               <svg
@@ -256,7 +250,7 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
             {dropdownOpen && (
               <>
                 <div className="fixed inset-0 z-40" onClick={() => setDropdownOpen(false)} />
-                <div className="absolute right-0 top-full mt-1 z-50 w-56 sm:w-64 bg-black border border-[#1a1a1a]">
+                <div className="absolute right-0 top-full mt-1 z-50 w-52 sm:w-64 bg-black border border-[#1a1a1a]">
                   <div className="p-3 border-b border-[#1a1a1a]">
                     <div className="cyber-mono text-[9px] text-[#444] tracking-wider mb-1">
                       AUTHENTICATED GHOST

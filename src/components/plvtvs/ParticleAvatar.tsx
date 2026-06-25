@@ -219,11 +219,13 @@ function ParticleSystem({
 
 export default function ParticleAvatar({ exploded, mousePos }: ParticleAvatarProps) {
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full" style={{ contain: 'strict' }}>
       <Canvas
         camera={{ position: [0, 0, 6], fov: 45 }}
         dpr={[1, 2]}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ antialias: true, alpha: true, powerPreference: 'default' }}
+        onError={(e) => console.warn('[ParticleAvatar] Canvas error:', e)}
+        fallback={<div className="w-full h-full" />}
       >
         <ParticleSystem
           exploded={exploded}
