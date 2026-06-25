@@ -130,7 +130,7 @@ export default function WalletButton({ compact = false }: WalletButtonProps) {
   return (
     <>
       {/* Hidden ConnectButton to initialize RainbowKit modal context */}
-      <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden', opacity: 0, pointerEvents: 'none' }}>
+      <div style={{ position: 'fixed', top: -9999, left: -9999, width: 1, height: 1, overflow: 'hidden', opacity: 0.01, pointerEvents: 'none' }}>
         <ConnectButton label="CONNECT WALLET" />
       </div>
 

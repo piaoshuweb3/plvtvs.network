@@ -384,3 +384,42 @@ body > div[data-rk] {
   60% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 2px); }
   80% { clip-path: inset(70% 0 10% 0); transform: translate(1px, -2px); }
 }
+
+/* ============================================================
+   RainbowKit modal positioning fix (CRITICAL)
+   In production builds, RainbowKit's CSS-in-JS may not inject
+   position:fixed properly. These rules force the modal to
+   render as a fixed overlay centered on screen.
+   ============================================================ */
+[role="dialog"][data-rk] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 2147483647 !important;
+  width: auto !important;
+  max-width: 90vw !important;
+  height: auto !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
+}
+
+/* The backdrop behind the modal */
+[role="dialog"][data-rk] ~ div,
+[data-rk] + div {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 2147483646 !important;
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Ensure the modal's parent doesn't clip it */
+[data-rk] {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 2147483647 !important;
+}
