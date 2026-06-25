@@ -175,19 +175,27 @@ body > div[data-rk] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 14px 28px;
+  padding: 10px 16px;
   background: transparent;
   border: 1px solid #00FFCC;
   color: #00FFCC;
   font-family: var(--font-geist-mono), monospace;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
   overflow: hidden;
   text-decoration: none;
+  white-space: nowrap;
+}
+@media (min-width: 640px) {
+  .cyber-btn {
+    padding: 14px 28px;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+  }
 }
 .cyber-btn::before {
   content: '';

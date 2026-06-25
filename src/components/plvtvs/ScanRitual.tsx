@@ -219,11 +219,11 @@ export default function ScanRitual({
       )}
 
       {/* Central content */}
-      <div className="relative z-10 w-full max-w-2xl px-6 flex flex-col items-center pointer-events-none">
+      <div className="relative z-10 w-full max-w-2xl px-3 sm:px-6 flex flex-col items-center pointer-events-none">
         <div className="cyber-mono text-xs text-[#00FFCC] tracking-[0.4em] mb-2 cyber-flicker">
           PLVTVS.core // BIO-METRIC SYNC
         </div>
-        <h2 className="cyber-mono text-2xl md:text-3xl font-bold text-white text-center mb-1">
+        <h2 className="cyber-mono text-lg sm:text-2xl md:text-3xl font-bold text-white text-center mb-1">
           ENCAPSULATING BIOLOGICAL GHOST
         </h2>
         <p className="cyber-mono text-[10px] text-[#666] tracking-[0.3em] mb-8">
