@@ -1,0 +1,16 @@
+diff --git a/index.js b/index.js
+--- a/index.js
++++ b/index.js
+@@ -1562,9 +1562,11 @@
+     // 2-module default to avoid changing encoder output; callers that need a
+     // standards-conformant quiet zone must pass `border: 4` explicitly.
+     const border = _opts.border === undefined ? 2 : _opts.border;
+-    if (!Number.isSafeInteger(border) || border <= 0)
++    if (!Number.isSafeInteger(border) || border < 0)
+         throw new Error(`invalid border=${border}`);
+-    res = res.border(border, false); // Add border
++    if (border > 0) {
++        res = res.border(border, false); // Add border
++    }
+     if (_opts.scale !== undefined)
+         res = res.scale(_opts.scale); // Scale image
