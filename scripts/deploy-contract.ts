@@ -63,7 +63,7 @@ async function main() {
 
   // --- Load env ---
   const env = loadEnv();
-  const privateKey = env.PRIVATE_KEY;
+  const privateKey = env.PRIVATE_KEY || process.env.PRIVATE_KEY;
   const adminWallet = env.NEXT_PUBLIC_PLVTVS_ADMIN_WALLET;
 
   if (!privateKey) {
