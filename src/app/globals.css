@@ -404,19 +404,7 @@ body > div[data-rk] {
   overflow: auto !important;
 }
 
-/* The backdrop behind the modal */
-[role="dialog"][data-rk] ~ div,
-[data-rk] + div {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 2147483646 !important;
-  background: rgba(0, 0, 0, 0.7) !important;
-}
-
-/* Ensure the modal's parent doesn't clip it */
+/* Ensure the modal's container doesn't clip it */
 [data-rk] {
   position: fixed !important;
   top: 0 !important;
