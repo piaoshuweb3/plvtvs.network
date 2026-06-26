@@ -114,7 +114,7 @@ export default function Home() {
   }
 
   return (
-    <main className="bg-black text-white min-h-screen overflow-x-hidden">
+    <main className="bg-black text-white min-h-screen">
       <ErrorBoundary>
         <HeroSection
           onDeploy={handleDeploy}

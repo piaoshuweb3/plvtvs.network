@@ -101,6 +101,7 @@ html, body {
   font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -110,30 +111,21 @@ body {
 }
 
 /* ============================================================
-   RainbowKit modal fixes — ensure modal renders correctly
-   (not affected by parent position:relative or overflow:hidden)
+   RainbowKit modal fixes — ONLY target the modal dialog itself
+   Do NOT set position:fixed on [data-rk] container because it
+   wraps the entire page content and would remove it from flow.
    ============================================================ */
-[data-rk] > *,
-[data-wallet] {
-  position: revert-layer;
-}
-
-/* Force RainbowKit modal to render at top level */
-.rk-connect-modal-container,
-[data-rk-modal-container],
-w3m-modal,
-wui-modal,
-wui-card {
+[role="dialog"][data-rk] {
   position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
   z-index: 2147483647 !important;
-}
-
-/* Ensure RainbowKit portal content is not clipped */
-body > div[data-rk] {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 2147483647 !important;
+  width: auto !important;
+  max-width: 90vw !important;
+  height: auto !important;
+  max-height: 90vh !important;
+  overflow: auto !important;
 }
 
 /* PLVTVS Cyberpunk scrollbar */
@@ -386,34 +378,3 @@ body > div[data-rk] {
   60% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 2px); }
   80% { clip-path: inset(70% 0 10% 0); transform: translate(1px, -2px); }
 }
-
-/* ============================================================
-   RainbowKit modal positioning fix (CRITICAL)
-   In production builds, RainbowKit's CSS-in-JS may not inject
-   position:fixed properly. These rules force the modal to
-   render as a fixed overlay centered on screen.
-   ============================================================ */
-[role="dialog"][data-rk] {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  z-index: 2147483647 !important;
-  width: auto !important;
-  max-width: 90vw !important;
-  height: auto !important;
-  max-height: 90vh !important;
-  overflow: auto !important;
-}
-
-/* Ensure the modal's container doesn't clip it */
-[data-rk] {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  z-index: 2147483647 !important;
-}
-
-/* PLVTVS.ONE v2.0.27 — force CSS cache bust */
-
-
