@@ -117,15 +117,30 @@ body {
    ============================================================ */
 [role="dialog"][data-rk] {
   position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
+  top: 80px !important;
+  right: 20px !important;
+  left: auto !important;
+  transform: none !important;
   z-index: 2147483647 !important;
-  width: auto !important;
+  width: 360px !important;
   max-width: 90vw !important;
   height: auto !important;
-  max-height: 90vh !important;
+  max-height: 80vh !important;
   overflow: auto !important;
+  background: #000000 !important;
+  border: 1px solid #00FFCC !important;
+  box-shadow: 0 0 40px rgba(0, 255, 204, 0.3) !important;
+  border-radius: 2px !important;
+}
+
+/* Style wallet option buttons inside modal */
+[role="dialog"][data-rk] button {
+  font-family: monospace !important;
+}
+
+/* Modal backdrop */
+[role="dialog"][data-rk] > div:first-child {
+  background: rgba(0, 0, 0, 0.8) !important;
 }
 
 /* PLVTVS Cyberpunk scrollbar */
