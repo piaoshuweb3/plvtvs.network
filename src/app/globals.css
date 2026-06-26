@@ -416,3 +416,13 @@ body > div[data-rk] {
 }
 
 /* PLVTVS.ONE v2.0.27 — force CSS cache bust */
+
+/* CRITICAL: Override any overflow:hidden on body to enable page scrolling */
+body {
+  overflow: visible !important;
+  overflow-x: clip !important;
+  overflow-y: visible !important;
+  height: auto !important;
+  max-height: none !important;
+  position: static !important;
+}
