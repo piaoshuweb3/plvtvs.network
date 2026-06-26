@@ -184,11 +184,11 @@ bun run db:generate # Regenerate Prisma client
 - [x] Wagmi + Viem integration for real Base Mainnet wallet connection
 - [x] Admin console with OPERATOR + SUPER_ADMIN RBAC
 - [x] User / subscription / node / log management APIs
-- [ ] On-chain subscription verification via PlvtvsSubscription smart contract
-- [ ] Real biometric face capture via MediaPipe Face Mesh
+- [x] On-chain subscription verification via PlvtvsSubscription smart contract
+- [x] Real biometric face capture via MediaPipe Face Mesh
 - [ ] WebSocket-driven live activity logs from backend cluster
-- [ ] ERC-4337 Session Key for autonomous on-chain execution
-- [ ] Email/notification system for subscription expiry
+- [x] ERC-4337 Session Key for autonomous on-chain execution
+- [x] Email/notification system for subscription expiry
 
 ## License
 
