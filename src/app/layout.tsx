@@ -1,18 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import PlvtvsProviders from "@/lib/plvtvs/providers";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "PLVTVS.ONE — Your Ghost in the Wireless Shell",
@@ -63,8 +52,8 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
-        style={{ background: "#000000" }}
+        className="antialiased bg-black text-white"
+        style={{ background: "#000000", fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, monospace" }}
       >
         <PlvtvsProviders>{children}</PlvtvsProviders>
         <Toaster />
