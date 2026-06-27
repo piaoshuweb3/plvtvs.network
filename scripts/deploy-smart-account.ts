@@ -28,7 +28,9 @@ async function main() {
   }
 
   const { privateKeyToAccount } = await import("viem/accounts");
-  const { createPublicClient, createWalletClient, http, parseAbi, encodeFunctionData, type Hex, type Address, defineChain } = await import("viem");
+  const { createPublicClient, createWalletClient, http, parseAbi, defineChain } = await import("viem");
+  type Hex = `0x${string}`;
+  type Address = `0x${string}`;
 
   const account = privateKeyToAccount(`0x${cleanPk}` as Hex);
   console.log("Owner:", account.address);
