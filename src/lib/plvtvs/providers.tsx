@@ -141,7 +141,7 @@ export default function PlvtvsProviders({
         <RainbowKitProvider
           theme={customTheme}
           locale={initialLocale}
-          modalSize="compact"
+          modalSize="wide"
           appContext={{
             title: PLVTVS_APP_NAME,
             logo: undefined,
