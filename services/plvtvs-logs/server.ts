@@ -1,5 +1,9 @@
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import {
+  PlvtvsRealtimeEngine,
+  type LogEvent as ChainLogEvent,
+} from "../../src/lib/plvtvs/chain/realtime-engine.ts";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -220,7 +224,7 @@ io.on("connection", (socket) => {
   });
 });
 
-// ─── Simulated log pump ──────────────────────────────────────────────────────
+// ─── Simulated log pump (fallback when RPC is down) ─────────────────────────
 
 function scheduleNextSimLog() {
   const delay = 3000 + Math.random() * 5000; // 3-8 seconds
@@ -238,8 +242,24 @@ function scheduleNextSimLog() {
   }, delay);
 }
 
-// Start the pump immediately
-scheduleNextSimLog();
+// ─── Chain engine integration ───────────────────────────────────────────────
+
+const chainEngine = new PlvtvsRealtimeEngine();
+
+/**
+ * Adapt a chain LogEvent into the server's internal LogEntry format
+ * and broadcast it to all connected clients.
+ */
+function ingestChainEvent(event: ChainLogEvent): void {
+  addLog(
+    event.sector,
+    // Map SUCCESS → INFO for backwards compatibility with the existing
+    // LogEntry type (SUCCESS is chain-only)
+    event.level === "SUCCESS" ? "INFO" : event.level,
+    event.message,
+    event.source ?? "base-chain",
+  );
+}
 
 // ─── Periodic log cleanup (every 5 min) ─────────────────────────────────────
 
@@ -251,11 +271,28 @@ setInterval(() => {
 
 // ─── Boot ────────────────────────────────────────────────────────────────────
 
-httpServer.listen(PORT, () => {
+httpServer.listen(PORT, async () => {
   console.log(BANNER);
   console.log(`  ✓ WebSocket server listening on ws://localhost:${PORT}`);
   console.log(`  ✓ Max logs: ${MAX_LOGS} | History snapshot: ${HISTORY_SIZE}`);
-  console.log(`  ✓ Simulated logs: ON (activates after 60s of inactivity)`);
+
+  // Try to enable real-time chain data; fall back to sim logs if RPC is down
+  const rpcAvailable = await chainEngine.isRpcAvailable();
+
+  if (rpcAvailable) {
+    console.log(`  ✓ Base Sepolia RPC reachable — live chain data ON`);
+    console.log(`  ✓ Simulated logs: OFF`);
+
+    // Start engine — events are ingested through the same pipeline
+    await chainEngine.start(ingestChainEvent);
+  } else {
+    console.log(`  ⚠ Base Sepolia RPC unreachable — falling back to simulated logs`);
+    console.log(`  ✓ Simulated logs: ON (activates after 60s of inactivity)`);
+
+    // Start the simulated log pump
+    scheduleNextSimLog();
+  }
+
   console.log(`  ✓ CORS: *`);
   console.log(`\n  Ready.\n`);
 });
