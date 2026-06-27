@@ -39,7 +39,7 @@ async function main() {
   const baseSepolia = defineChain({
     id: 84532, name: "Base Sepolia",
     nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
-    rpcUrls: { default: { http: ["https://sepolia.base.org"] } },
+    rpcUrls: { default: { http: ["https://base-sepolia-rpc.publicnode.com"] } },
     testnet: true,
   });
 
