@@ -64,7 +64,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
           <div className="relative">
             <PixelAvatar seed={avatarSeed} size={192} />
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 cyber-mono text-[9px] text-[#00FFCC] tracking-[0.3em] whitespace-nowrap cyber-flicker">
-              YOUR BIOLOGICAL soul // ENCAPSULATED
+              YOUR BIOLOGICAL SOUL // ENCAPSULATED
             </div>
           </div>
         </div>
@@ -95,7 +95,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
             onClick={handleDownload}
             className="cyber-btn min-w-[300px]"
           >
-            ↓ DOWNLOAD YOUR DIGITAL soul (.SVG)
+            ↓ DOWNLOAD YOUR DIGITAL SOUL (.SVG)
           </button>
         </div>
 
@@ -127,7 +127,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
               PLVTVS<span className="text-[#666] text-base">.network</span>
             </div>
             <p className="cyber-mono text-[10px] text-[#444] tracking-wider">
-              YOUR soul IN THE WIRELESS SHELL · © {new Date().getFullYear()} · BEYOND AGENTS
+              YOUR SOUL IN THE WIRELESS SHELL · © {new Date().getFullYear()} · BEYOND AGENTS
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 cyber-mono text-[10px] text-[#666] tracking-wider">

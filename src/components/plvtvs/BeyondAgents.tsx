@@ -200,7 +200,7 @@ function AvatarTopology() {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        soul
+        SOUL
       </text>
 
       <text

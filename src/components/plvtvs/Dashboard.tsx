@@ -35,7 +35,7 @@ function CyberSoulModule({ seed }: { seed: string }) {
         <div className="flex items-center gap-2">
           <span className="text-[#00FFCC]">◉</span>
           <span className="cyber-mono text-[10px] tracking-[0.2em] text-[#888]">
-            MODULE 01 // THE CYBER soul
+            MODULE 01 // THE CYBER SOUL
           </span>
         </div>
         <span className="cyber-mono text-[9px] text-[#00FFCC] border border-[#00FFCC] px-1.5 py-0.5">
@@ -64,7 +64,7 @@ function CyberSoulModule({ seed }: { seed: string }) {
 
         <div className="flex-1 space-y-2">
           <div>
-            <div className="cyber-mono text-[9px] text-[#444] tracking-wider">soul HASH</div>
+            <div className="cyber-mono text-[9px] text-[#444] tracking-wider">SOUL HASH</div>
             <div className="cyber-mono text-sm text-[#00FFCC] cyber-text-glow-cyan">
               {seed.slice(0, 10)}...{seed.slice(-4)}
             </div>

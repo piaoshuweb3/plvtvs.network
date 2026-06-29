@@ -186,7 +186,7 @@ export default function HeroSection({
 
           {/* Main H1 */}
           <h1 className="cyber-mono text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-white leading-[1.1] mb-4 sm:mb-6 cyber-text-glow-cyan">
-            YOUR soul IN
+            YOUR SOUL IN
             <br />
             THE WIRELESS SHELL.
           </h1>

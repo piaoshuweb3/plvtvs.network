@@ -240,7 +240,7 @@ export default function AdminPage() {
           {/* KPI grid */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <KpiCard
-              label="TOTAL souls"
+              label="TOTAL SOULS"
               value={stats.users.total}
               subtext={`${stats.users.new24h} new (24h)`}
               color="#00FFCC"
@@ -412,7 +412,7 @@ export default function AdminPage() {
               REFRESH
             </button>
             <span className="cyber-mono text-[10px] text-[#666] ml-auto">
-              {usersTotal} souls
+              {usersTotal} SOULS
             </span>
           </div>
 
@@ -533,7 +533,7 @@ export default function AdminPage() {
                 {users.length === 0 && !loading && (
                   <tr>
                     <td colSpan={8} className="p-8 text-center text-[#444]">
-                      NO souls FOUND · TRY ADJUSTING FILTERS
+                      NO SOULS FOUND · TRY ADJUSTING FILTERS
                     </td>
                   </tr>
                 )}
