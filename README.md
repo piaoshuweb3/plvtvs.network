@@ -1,6 +1,6 @@
 # PLVTVS.ONE
 
-> **Your Ghost in the Wireless Shell.**
+> **Your soul in the Wireless Shell.**
 > The sovereign avatar engineered to intercept, adapt, and monetize network value streams autonomously. Beyond Agents.
 
 ![PLVTVS](https://img.shields.io/badge/PHASE-OPERATIONAL-00FFCC?style=for-the-badge)
@@ -14,7 +14,7 @@ PLVTVS.ONE is a movie-grade cyberpunk web experience for digital avatars. Inspir
 3. **The Revelation** — Three parallel wealth-capture scenes unfold: Social Infiltration, Borderless Exchange, Algorithmic Harvest.
 
 Then the experience culminates in a 4-module cyber dashboard:
-- **Module 01**: The Cyber Ghost (radar-scanned pixel avatar)
+- **Module 01**: The Cyber soul (radar-scanned pixel avatar)
 - **Module 02**: Real-Time Valuation (live ETH/USD ticker with pulse waveform)
 - **Module 03**: Active Sectors (draggable allocation sliders for Social/Ecom/Crypto)
 - **Module 04**: Real-Time Activity Logs (Linux-style scrolling terminal)
@@ -119,11 +119,11 @@ Roles are derived from:
 | Route | Access | Description |
 |-------|--------|-------------|
 | `/` | Public | Hero experience + deploy ritual + revelation scenes |
-| `/dashboard` | Public (guest mode) or authenticated | 4-module cyber console (Cyber Ghost / Valuation / Sectors / Logs) |
+| `/dashboard` | Public (guest mode) or authenticated | 4-module cyber console (Cyber soul / Valuation / Sectors / Logs) |
 | `/admin` | OPERATOR+ only | Admin console with 4 tabs (Overview / Users / Logs / Admin Audit) |
 
 ### Admin Console Features (`/admin`)
-- **OVERVIEW** — KPI cards (total ghosts, subscribers, online nodes, total yield) + user breakdown bars + node distribution by sector/status + 24h activity counts
+- **OVERVIEW** — KPI cards (total souls, subscribers, online nodes, total yield) + user breakdown bars + node distribution by sector/status + 24h activity counts
 - **USER MANAGEMENT** — Filterable user table (search, role, status) with per-row actions: SUSPEND / ACTIVATE / PROMOTE-TO-OPERATOR / DEMOTE / BAN
 - **ACTIVITY LOGS** — Real-time scrolling activity log stream (color-coded by sector: SOCIAL/ECOM/CRYPTO/SYSTEM)
 - **ADMIN AUDIT LOG** — All admin actions recorded with admin wallet + target user + action + reason

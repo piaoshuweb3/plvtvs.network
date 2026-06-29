@@ -17,13 +17,13 @@ export async function requireAuth(req: NextRequest): Promise<AuthContext | NextR
   if (isUsingMemDb || !db) {
     const mdb = getMemDb();
     const user = mdb.users.get(wallet);
-    if (!user) return NextResponse.json({ error: 'Ghost not registered.' }, { status: 404 });
+    if (!user) return NextResponse.json({ error: 'Soul not registered.' }, { status: 404 });
     if (user.status !== 'ACTIVE') return NextResponse.json({ error: `Status: ${user.status}` }, { status: 403 });
     return { userId: user.id, walletAddress: user.walletAddress, role: user.role, status: user.status };
   }
 
   const user = await db.user.findUnique({ where: { walletAddress: wallet }, select: { id: true, walletAddress: true, role: true, status: true } });
-  if (!user) return NextResponse.json({ error: 'Ghost not registered.' }, { status: 404 });
+  if (!user) return NextResponse.json({ error: 'Soul not registered.' }, { status: 404 });
   if (user.status !== 'ACTIVE') return NextResponse.json({ error: `Status: ${user.status}` }, { status: 403 });
   return { userId: user.id, walletAddress: user.walletAddress, role: user.role, status: user.status };
 }

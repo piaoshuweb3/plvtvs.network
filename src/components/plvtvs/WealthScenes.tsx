@@ -30,7 +30,7 @@ const SCENES: WealthScene[] = [
     index: '02',
     title: 'BORDERLESS EXCHANGE',
     subtitle: 'Cross-Border Commerce · Autonomous Clearance',
-    body: 'Operating beyond sovereign borders. Automated arbitrage across digital storefronts, supply nodes, and virtual marketplaces. The ghost handles logistics; you pocket the difference.',
+    body: 'Operating beyond sovereign borders. Automated arbitrage across digital storefronts, supply nodes, and virtual marketplaces. The soul handles logistics; you pocket the difference.',
     color: '#FFCC00',
     glowClass: 'cyber-text-glow-gold',
     icon: 'ecommerce',
@@ -313,7 +313,7 @@ export default function WealthScenes() {
           <span className="cyber-text-glow-cyan text-[#00FFCC]">NETWORK HARVEST</span>
         </h2>
         <p className="cyber-mono text-sm text-[#888] max-w-2xl mx-auto leading-relaxed">
-          Your sovereign ghost now traverses three parallel digital worlds, intercepting
+          Your sovereign soul now traverses three parallel digital worlds, intercepting
           value streams across social, commercial, and cryptographic domains.
         </p>
       </div>

@@ -404,7 +404,7 @@ export default function FaceScanner({ active, onFaceHash, onProgress }: FaceScan
               {'// CAMERA DENIED'}
             </div>
             <div className="cyber-mono text-[10px] text-[#888] text-center max-w-xs">
-              Switching to matrix fingerprint fallback. Your ghost will still be encapsulated.
+              Switching to matrix fingerprint fallback. Your soul will still be encapsulated.
             </div>
           </div>
         )}

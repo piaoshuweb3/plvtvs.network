@@ -15,5 +15,5 @@ export const WC_PROJECT_ID = isValidWCProjectId(RAW_PROJECT_ID)
 
 export const HAS_WALLETCONNECT = WC_PROJECT_ID.length > 0;
 
-export const PLVTVS_CHAINS = [baseSepolia, base];
+export const PLVTVS_CHAINS = [baseSepolia, base] as const;
 export const PLVTVS_APP_NAME = 'PLVTVS.ONE';

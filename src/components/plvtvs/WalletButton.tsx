@@ -45,21 +45,21 @@ const ROLE_COLORS: Record<string, { dot: string; glow: string; border: string }>
   SUPER_ADMIN: { dot: '#FFCC00', glow: 'rgba(255,204,0,0.3)', border: 'rgba(255,204,0,0.4)' },
   OPERATOR:   { dot: '#0066FF', glow: 'rgba(0,102,255,0.3)',  border: 'rgba(0,102,255,0.4)' },
   SUBSCRIBER: { dot: '#00FFCC', glow: 'rgba(0,255,204,0.3)',  border: 'rgba(0,255,204,0.4)' },
-  GHOST:      { dot: '#888888', glow: 'rgba(136,136,136,0.25)', border: 'rgba(136,136,136,0.3)' },
+  SOUL:      { dot: '#888888', glow: 'rgba(136,136,136,0.25)', border: 'rgba(136,136,136,0.3)' },
 };
 
 function getRoleLabel(role: string, tier: number): string {
   if (role === 'SUPER_ADMIN') return 'SUPER ADMIN';
   if (role === 'OPERATOR') return 'OPERATOR';
   if (tier > 0) return 'SUBSCRIBER';
-  return 'GHOST';
+  return 'SOUL';
 }
 
 function getRoleColors(role: string, tier: number) {
   if (role === 'SUPER_ADMIN') return ROLE_COLORS.SUPER_ADMIN;
   if (role === 'OPERATOR') return ROLE_COLORS.OPERATOR;
   if (tier > 0) return ROLE_COLORS.SUBSCRIBER;
-  return ROLE_COLORS.GHOST;
+  return ROLE_COLORS.SOUL;
 }
 
 export default function WalletButton({ compact = false }: WalletButtonProps) {

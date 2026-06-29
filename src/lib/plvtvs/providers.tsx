@@ -30,10 +30,15 @@ import type { ReactNode } from 'react';
 // PLVTVS Providers — RainbowKit + Wagmi + React Query
 // ============================================================
 
+const baseDark = darkTheme({
+  accentColor: '#00FFCC',
+  accentColorForeground: '#000000',
+});
+
 const customTheme = {
-  ...darkTheme({
-    accentColor: '#00FFCC',
-    accentColorForeground: '#000000',
+  ...baseDark,
+  colors: {
+    ...baseDark.colors,
     connectButtonBackground: '#000000',
     connectButtonBackgroundError: '#ff4444',
     connectButtonInnerBackground: '#000000',
@@ -44,12 +49,12 @@ const customTheme = {
     modalText: '#ffffff',
     modalTextDim: '#666666',
     modalTextSecondary: '#888888',
-  }),
+  },
   fonts: {
     body: 'monospace, monospace',
   },
   radii: {
-    ...darkTheme().radii,
+    ...baseDark.radii,
     connectButton: '0px',
     modal: '2px',
     modalMobile: '2px',
@@ -142,12 +147,9 @@ export default function PlvtvsProviders({
           theme={customTheme}
           locale={initialLocale}
           modalSize="wide"
-          appContext={{
-            title: PLVTVS_APP_NAME,
-            logo: undefined,
-            description: HAS_WALLETCONNECT
-              ? 'Your Ghost in the Wireless Shell. Connect wallet to deploy your sovereign digital avatar.'
-              : 'Your Ghost in the Wireless Shell. Browser-injected wallets (MetaMask/Coinbase) supported. Set NEXT_PUBLIC_WC_PROJECT_ID to enable WalletConnect QR.',
+          appInfo={{
+            appName: PLVTVS_APP_NAME,
+            learnMoreUrl: 'https://plvtvs.one',
           }}
         >
           {children}

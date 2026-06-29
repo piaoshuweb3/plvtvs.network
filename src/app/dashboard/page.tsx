@@ -83,7 +83,7 @@ export default function DashboardPage() {
             {'// GUEST MODE'}
           </div>
           <div className="cyber-mono text-xs text-[#888] text-center">
-            Connect your wallet (top-right) to persist your ghost across sessions.
+            Connect your wallet (top-right) to persist your soul across sessions.
           </div>
         </div>
       )}

@@ -1,6 +1,6 @@
 # PLVTVS.ONE 功能说明报告与部署指南
 
-> **Your Ghost in the Wireless Shell.**
+> **Your soul in the Wireless Shell.**
 > 超越智能体的自主数字分身平台 — Base L2 链上订阅 + 生物特征识别 + 账户抽象
 
 **版本**: v2.0.26 · **网络**: Base L2 · **状态**: 🟢 全部模块开发完成  
@@ -825,4 +825,4 @@ npm start                # 生产模式启动
 ---
 
 > © PLVTVS Core. All rights reserved. Beyond Agents.
-> *"Your Ghost in the Wireless Shell."*
+> *"Your soul in the Wireless Shell."*

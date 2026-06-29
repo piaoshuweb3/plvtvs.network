@@ -121,7 +121,7 @@ export default function AdminShell({
           INSUFFICIENT PRIVILEGES
         </h1>
         <p className="cyber-mono text-sm text-[#666] mb-2 max-w-md">
-          Your ghost does not have <span className="text-[#FFCC00]">{requiredRole}</span> clearance.
+          Your soul does not have <span className="text-[#FFCC00]">{requiredRole}</span> clearance.
         </p>
         <p className="cyber-mono text-[10px] text-[#444] mb-8">
           Connected: {user.walletAddress.slice(0, 10)}...{user.walletAddress.slice(-4)} · Role: {user.role}

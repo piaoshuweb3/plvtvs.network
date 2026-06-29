@@ -11,8 +11,8 @@ interface DashboardProps {
   onJackOut: () => void;
 }
 
-// === MODULE 1: Cyber Ghost Status ===
-function CyberGhostModule({ seed }: { seed: string }) {
+// === MODULE 1: Cyber soul Status ===
+function CyberSoulModule({ seed }: { seed: string }) {
   const [echoNodes, setEchoNodes] = useState(0);
   const targetNodes = 1420;
 
@@ -35,7 +35,7 @@ function CyberGhostModule({ seed }: { seed: string }) {
         <div className="flex items-center gap-2">
           <span className="text-[#00FFCC]">◉</span>
           <span className="cyber-mono text-[10px] tracking-[0.2em] text-[#888]">
-            MODULE 01 // THE CYBER GHOST
+            MODULE 01 // THE CYBER soul
           </span>
         </div>
         <span className="cyber-mono text-[9px] text-[#00FFCC] border border-[#00FFCC] px-1.5 py-0.5">
@@ -64,7 +64,7 @@ function CyberGhostModule({ seed }: { seed: string }) {
 
         <div className="flex-1 space-y-2">
           <div>
-            <div className="cyber-mono text-[9px] text-[#444] tracking-wider">GHOST HASH</div>
+            <div className="cyber-mono text-[9px] text-[#444] tracking-wider">soul HASH</div>
             <div className="cyber-mono text-sm text-[#00FFCC] cyber-text-glow-cyan">
               {seed.slice(0, 10)}...{seed.slice(-4)}
             </div>
@@ -540,7 +540,7 @@ export default function Dashboard({ avatarSeed, onJackOut }: DashboardProps) {
 
       {/* 4-grid matrix */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-        <CyberGhostModule seed={avatarSeed} />
+        <CyberSoulModule seed={avatarSeed} />
         <RealTimeValuation active />
         <ActiveSectors onAdjust={() => getAudioEngine().playGlitch()} />
         <ActivityLogs active />

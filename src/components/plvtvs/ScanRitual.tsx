@@ -18,9 +18,9 @@ const SCAN_LINES = [
   '> [LOAD] Initializing bio-metric sync protocol...',
   '> [LOAD] Capturing 468-point facial landmark mesh...',
   '> [LOAD] Translating biological consciousness to Web3 node...',
-  '> [LOAD] Generating sovereign ghost hash...',
+  '> [LOAD] Generating sovereign soul hash...',
   '> [LOAD] Establishing secure tunnel with Base RPC Node...',
-  '> [LOAD] Encapsulating digital ghost into PLVTVS core...',
+  '> [LOAD] Encapsulating digital soul into PLVTVS core...',
 ];
 
 export default function ScanRitual({
@@ -138,7 +138,7 @@ export default function ScanRitual({
     getAudioEngine().playQuantumThud();
     setLogs((prev) => [
       ...prev,
-      '[SUCCESS] Biological Ghost Encapsulated.',
+      '[SUCCESS] Biological Soul Encapsulated.',
       '[OK] Quantum Sync Bridge: ESTABLISHED.',
       '[OK] Avatar forked into Base Layer-2.',
       bioHash ? `[HASH] Bio-signature: ${bioHash}` : '',
@@ -224,7 +224,7 @@ export default function ScanRitual({
           PLVTVS.core // BIO-METRIC SYNC
         </div>
         <h2 className="cyber-mono text-lg sm:text-2xl md:text-3xl font-bold text-white text-center mb-1">
-          ENCAPSULATING BIOLOGICAL GHOST
+          ENCAPSULATING BIOLOGICAL SOUL
         </h2>
         <p className="cyber-mono text-[10px] text-[#666] tracking-[0.3em] mb-8">
           {useRealFace ? 'ALIGN FACE WITH CAMERA · HOLD STEADY' : 'PLEASE HOLD IDENTITY STEADY'}

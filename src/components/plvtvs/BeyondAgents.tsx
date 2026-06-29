@@ -200,7 +200,7 @@ function AvatarTopology() {
         fontFamily="monospace"
         fontWeight="bold"
       >
-        GHOST
+        soul
       </text>
 
       <text
@@ -319,7 +319,7 @@ export default function BeyondAgents() {
         {/* Bottom tagline */}
         <div className="text-center mt-12">
           <p className="cyber-mono text-sm text-[#666] italic">
-            &quot;Your physical body sleeps. Your digital ghost conquers the cyber world on your behalf.&quot;
+            &quot;Your physical body sleeps. Your digital soul conquers the cyber world on your behalf.&quot;
           </p>
         </div>
       </div>

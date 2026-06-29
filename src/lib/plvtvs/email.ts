@@ -79,7 +79,7 @@ function baseTemplate(content: string): string {
           <tr>
             <td style="padding:32px 40px 16px;text-align:center;border-bottom:1px solid #00FFCC22;">
               <span style="font-size:28px;font-weight:bold;letter-spacing:6px;color:#00FFCC;font-family:'Courier New',Consolas,monospace;">PLVTVS</span><span style="font-size:28px;font-weight:bold;color:#FFCC00;font-family:'Courier New',Consolas,monospace;">.ONE</span>
-              <div style="font-size:11px;color:#666;margin-top:4px;letter-spacing:2px;">YOUR GHOST IN THE WIRELESS SHELL</div>
+              <div style="font-size:11px;color:#666;margin-top:4px;letter-spacing:2px;">YOUR SOUL IN THE WIRELESS SHELL</div>
             </td>
           </tr>
           <!-- Content -->
@@ -130,7 +130,7 @@ function buildConfirmHtml(
     <div style="text-align:center;margin-bottom:24px;">
       <div style="font-size:48px;margin-bottom:8px;">&#x2714;</div>
       <div style="font-size:20px;font-weight:bold;color:#00FFCC;letter-spacing:2px;">SUBSCRIPTION ACTIVATED</div>
-      <div style="font-size:12px;color:#666;margin-top:4px;">Your ghost is now amplified</div>
+      <div style="font-size:12px;color:#666;margin-top:4px;">Your soul is now amplified</div>
     </div>
 
     <table width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #00FFCC22;border-radius:4px;margin-bottom:24px;">
@@ -218,7 +218,7 @@ function buildReminderHtml(
     </table>
 
     <div style="text-align:center;margin-bottom:8px;">
-      <div style="font-size:11px;color:#666;margin-bottom:12px;">Without renewal, your ghost returns to the void.</div>
+      <div style="font-size:11px;color:#666;margin-bottom:12px;">Without renewal, your soul returns to the void.</div>
       <a href="https://plvtvs.one/dashboard" style="display:inline-block;padding:12px 32px;background:#FFCC00;color:#000000;text-decoration:none;border-radius:4px;font-weight:bold;font-size:14px;letter-spacing:1px;font-family:'Courier New',Consolas,monospace;">RENEW NOW &#x2192;</a>
     </div>
   `);

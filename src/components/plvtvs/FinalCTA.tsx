@@ -31,7 +31,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `plvtvs-ghost-${avatarSeed.slice(0, 8)}.svg`;
+    a.download = `plvtvs-soul-${avatarSeed.slice(0, 8)}.svg`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -64,7 +64,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
           <div className="relative">
             <PixelAvatar seed={avatarSeed} size={192} />
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 cyber-mono text-[9px] text-[#00FFCC] tracking-[0.3em] whitespace-nowrap cyber-flicker">
-              YOUR BIOLOGICAL GHOST // ENCAPSULATED
+              YOUR BIOLOGICAL soul // ENCAPSULATED
             </div>
           </div>
         </div>
@@ -95,13 +95,13 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
             onClick={handleDownload}
             className="cyber-btn min-w-[300px]"
           >
-            ↓ DOWNLOAD YOUR DIGITAL GHOST (.SVG)
+            ↓ DOWNLOAD YOUR DIGITAL soul (.SVG)
           </button>
         </div>
 
         {/* Tip */}
         <p className="cyber-mono text-[11px] text-[#444] max-w-xl mx-auto leading-relaxed">
-          {'// Use your digital ghost as your Twitter/X or Discord avatar.'}
+          {'// Use your digital soul as your Twitter/X or Discord avatar.'}
           <br />
           {'// Become a node in the sovereign PLVTVS.network — viral propagation is inevitable.'}
         </p>
@@ -127,7 +127,7 @@ export default function FinalCTA({ avatarSeed, onEnterDashboard }: FinalCTAProps
               PLVTVS<span className="text-[#666] text-base">.network</span>
             </div>
             <p className="cyber-mono text-[10px] text-[#444] tracking-wider">
-              YOUR GHOST IN THE WIRELESS SHELL · © {new Date().getFullYear()} · BEYOND AGENTS
+              YOUR soul IN THE WIRELESS SHELL · © {new Date().getFullYear()} · BEYOND AGENTS
             </p>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2 cyber-mono text-[10px] text-[#666] tracking-wider">
